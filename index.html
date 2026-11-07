@@ -197,9 +197,9 @@ function render(){
   const any = sorted.some(t=>scores[t.id]>0);
   sorted.forEach(t=>b.appendChild(rows[t.id]));
   sorted.forEach(t=>{
+    const el = rows[t.id], s = scores[t.id];
+    const place = 1 + sorted.filter(o=>scores[o.id] > s).length;
     el.querySelector(".pl").innerHTML = any ? `${place}<sup>${ord(place)}</sup>` : "–";
-    pl.firstChild.nodeType===3 && pl.removeChild(pl.firstChild);
-    pl.insertAdjacentHTML("afterbegin", any ? `${place}<sup>${ord(place)}</sup>` : "–");
     el.classList.remove("p1","p2","p3");
     if(any) el.classList.add("p"+Math.min(place,3));
     el.querySelector(".bar i").style.width = (s/max*100)+"%";
@@ -211,7 +211,6 @@ function render(){
     ? "Updated <b>"+new Date(lastTs).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})+"</b>"
     : (got ? "Waiting for the first scores." : "");
 }
-
 function countTo(el,id,target){
   const from = shown[id], node = el.firstChild;
   if(from===target){ node.nodeValue=target; return; }
