@@ -182,7 +182,7 @@ function build(){
   TEAMS.forEach(t=>{
     const el = document.createElement("article");
     el.className = "row"; el.style.setProperty("--c", t.color);
-    el.innerHTML = `<div class="place">–<small>Place</small></div>
+    el.innerHTML = `<div class="place"><span class="pl">–</span><small>Place</small></div>
       <div class="team"><h3>${t.name}</h3><div class="bar"><i></i></div></div>
       <div class="score">0<small>points</small></div>`;
     b.appendChild(el); rows[t.id]=el; shown[t.id]=0;
@@ -197,9 +197,7 @@ function render(){
   const any = sorted.some(t=>scores[t.id]>0);
   sorted.forEach(t=>b.appendChild(rows[t.id]));
   sorted.forEach(t=>{
-    const el = rows[t.id], s = scores[t.id];
-    const place = 1 + sorted.filter(o=>scores[o.id] > s).length;   // ties share a place
-    const pl = el.querySelector(".place");
+    el.querySelector(".pl").innerHTML = any ? `${place}<sup>${ord(place)}</sup>` : "–";
     pl.firstChild.nodeType===3 && pl.removeChild(pl.firstChild);
     pl.insertAdjacentHTML("afterbegin", any ? `${place}<sup>${ord(place)}</sup>` : "–");
     el.classList.remove("p1","p2","p3");
